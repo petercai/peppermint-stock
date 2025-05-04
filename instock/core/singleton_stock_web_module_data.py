@@ -3,7 +3,7 @@
 
 import instock.core.tablestructure as tbs
 from instock.lib.singleton_type import singleton_type
-import instock.core.web_module_data as wmd
+import instock.core.web_module_data as web_data
 
 __author__ = 'myh '
 __date__ = '2023/3/10 '
@@ -12,7 +12,7 @@ __date__ = '2023/3/10 '
 class stock_web_module_data(metaclass=singleton_type):
     def __init__(self):
         _data = {}
-        self.data_list = [wmd.web_module_data(
+        self.data_list = [web_data.web_module_data(
             mode="query",
             type="综合选股",
             ico="fa fa-desktop",
@@ -24,7 +24,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_SELECTION['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -36,7 +36,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=True,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_SPOT['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -48,7 +48,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=True,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_FUND_FLOW['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -60,7 +60,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=True,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_BONUS['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -72,7 +72,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=True,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_TOP['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -84,7 +84,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_BLOCKTRADE['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -95,7 +95,7 @@ class stock_web_module_data(metaclass=singleton_type):
             primary_key=[],
             is_realtime=True,
             order_by=" `fund_amount` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -106,7 +106,7 @@ class stock_web_module_data(metaclass=singleton_type):
             primary_key=[],
             is_realtime=True,
             order_by=" `fund_amount` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票基本数据",
             ico="fa fa-book",
@@ -116,7 +116,7 @@ class stock_web_module_data(metaclass=singleton_type):
             column_names=tbs.get_field_cns(tbs.TABLE_CN_ETF_SPOT['columns']),
             primary_key=[],
             is_realtime=True
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票指标数据",
             ico="fa fa-indent",
@@ -128,7 +128,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_INDICATORS['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票指标数据",
             ico="fa fa-indent",
@@ -140,7 +140,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_INDICATORS_BUY['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票指标数据",
             ico="fa fa-indent",
@@ -152,7 +152,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_INDICATORS_SELL['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票K线形态",
             ico="fa fa-tag",
@@ -164,7 +164,7 @@ class stock_web_module_data(metaclass=singleton_type):
             is_realtime=False,
             order_columns=f"(SELECT `datetime` FROM `{tbs.TABLE_CN_STOCK_ATTENTION['name']}` WHERE `code`=`{tbs.TABLE_CN_STOCK_KLINE_PATTERN['name']}`.`code`) AS `cdatetime`",
             order_by=" `cdatetime` DESC"
-        ), wmd.web_module_data(
+        ), web_data.web_module_data(
             mode="query",
             type="股票策略数据",
             ico="fa fa-check-square-o",
@@ -180,7 +180,7 @@ class stock_web_module_data(metaclass=singleton_type):
 
         for table in tbs.TABLE_CN_STOCK_STRATEGIES:
             self.data_list.append(
-                wmd.web_module_data(
+                web_data.web_module_data(
                     mode="query",
                     type="股票策略数据",
                     ico="fa fa-check-square-o",
