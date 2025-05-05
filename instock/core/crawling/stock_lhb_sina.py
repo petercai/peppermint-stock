@@ -8,13 +8,13 @@ https://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.pht
 
 from io import StringIO
 
-import pandas as pd
+import pandas
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 
-def stock_lhb_detail_daily_sina(date: str = "20240222") -> pd.DataFrame:
+def stock_lhb_detail_daily_sina(date: str = "20240222") -> pandas.DataFrame:
     """
     龙虎榜-每日详情
     https://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml
@@ -31,12 +31,12 @@ def stock_lhb_detail_daily_sina(date: str = "20240222") -> pd.DataFrame:
     selected_html = soup.find(name="div", attrs={"class": "list"}).find_all(
         name="table", attrs={"class": "list_table"}
     )
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for table in selected_html:
-        temp_df = pd.read_html(StringIO(table.prettify()), header=0, skiprows=1)[0]
-        temp_symbol = pd.read_html(StringIO(table.prettify()))[0].iat[0, 0]
+        temp_df = pandas.read_html(StringIO(table.prettify()), header=0, skiprows=1)[0]
+        temp_symbol = pandas.read_html(StringIO(table.prettify()))[0].iat[0, 0]
         temp_df["指标"] = temp_symbol
-        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
+        big_df = pandas.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df["股票代码"] = big_df["股票代码"].astype(str).str.zfill(6)
     del big_df["查看详情"]
     big_df.columns = [
@@ -49,10 +49,10 @@ def stock_lhb_detail_daily_sina(date: str = "20240222") -> pd.DataFrame:
         "成交额",
         "指标",
     ]
-    big_df["收盘价"] = pd.to_numeric(big_df["收盘价"], errors="coerce")
-    big_df["对应值"] = pd.to_numeric(big_df["对应值"], errors="coerce")
-    big_df["成交量"] = pd.to_numeric(big_df["成交量"], errors="coerce")
-    big_df["成交额"] = pd.to_numeric(big_df["成交额"], errors="coerce")
+    big_df["收盘价"] = pandas.to_numeric(big_df["收盘价"], errors="coerce")
+    big_df["对应值"] = pandas.to_numeric(big_df["对应值"], errors="coerce")
+    big_df["成交量"] = pandas.to_numeric(big_df["成交量"], errors="coerce")
+    big_df["成交额"] = pandas.to_numeric(big_df["成交额"], errors="coerce")
     return big_df
 
 
@@ -87,7 +87,7 @@ def _find_last_page(
     return previous_page
 
 
-def stock_lhb_ggtj_sina(symbol: str = "5") -> pd.DataFrame:
+def stock_lhb_ggtj_sina(symbol: str = "5") -> pandas.DataFrame:
     """
     龙虎榜-个股上榜统计
     https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/ggtj/index.phtml
@@ -100,15 +100,15 @@ def stock_lhb_ggtj_sina(symbol: str = "5") -> pd.DataFrame:
         "https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/ggtj/index.phtml"
     )
     last_page_num = _find_last_page(url, symbol)
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in tqdm(range(1, last_page_num + 1), leave=False):
         params = {
             "last": symbol,
             "p": page,
         }
         r = requests.get(url, params=params)
-        temp_df = pd.read_html(StringIO(r.text))[0].iloc[0:, :]
-        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
+        temp_df = pandas.read_html(StringIO(r.text))[0].iloc[0:, :]
+        big_df = pandas.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df["股票代码"] = big_df["股票代码"].astype(str).str.zfill(6)
     big_df.columns = [
         "股票代码",
@@ -123,7 +123,7 @@ def stock_lhb_ggtj_sina(symbol: str = "5") -> pd.DataFrame:
     return big_df
 
 
-def stock_lhb_yytj_sina(symbol: str = "5") -> pd.DataFrame:
+def stock_lhb_yytj_sina(symbol: str = "5") -> pandas.DataFrame:
     """
     龙虎榜-营业部上榜统计
     https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml
@@ -136,15 +136,15 @@ def stock_lhb_yytj_sina(symbol: str = "5") -> pd.DataFrame:
         "https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml"
     )
     last_page_num = _find_last_page(url, symbol)
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in tqdm(range(1, last_page_num + 1), leave=False):
         params = {
             "last": "5",
             "p": page,
         }
         r = requests.get(url, params=params)
-        temp_df = pd.read_html(StringIO(r.text))[0].iloc[0:, :]
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        temp_df = pandas.read_html(StringIO(r.text))[0].iloc[0:, :]
+        big_df = pandas.concat([big_df, temp_df], ignore_index=True)
     big_df.columns = [
         "营业部名称",
         "上榜次数",
@@ -154,13 +154,13 @@ def stock_lhb_yytj_sina(symbol: str = "5") -> pd.DataFrame:
         "卖出席位数",
         "买入前三股票",
     ]
-    big_df["上榜次数"] = pd.to_numeric(big_df["上榜次数"], errors="coerce")
-    big_df["买入席位数"] = pd.to_numeric(big_df["买入席位数"], errors="coerce")
-    big_df["卖出席位数"] = pd.to_numeric(big_df["卖出席位数"], errors="coerce")
+    big_df["上榜次数"] = pandas.to_numeric(big_df["上榜次数"], errors="coerce")
+    big_df["买入席位数"] = pandas.to_numeric(big_df["买入席位数"], errors="coerce")
+    big_df["卖出席位数"] = pandas.to_numeric(big_df["卖出席位数"], errors="coerce")
     return big_df
 
 
-def stock_lhb_jgzz_sina(symbol: str = "5") -> pd.DataFrame:
+def stock_lhb_jgzz_sina(symbol: str = "5") -> pandas.DataFrame:
     """
     龙虎榜-机构席位追踪
     https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/jgzz/index.phtml
@@ -173,17 +173,17 @@ def stock_lhb_jgzz_sina(symbol: str = "5") -> pd.DataFrame:
         "https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/jgzz/index.phtml"
     )
     last_page_num = _find_last_page(url, symbol)
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in tqdm(range(1, last_page_num + 1), leave=False):
         params = {
             "last": symbol,
             "p": page,
         }
         r = requests.get(url, params=params)
-        temp_df = pd.read_html(StringIO(r.text))[0].iloc[0:, :]
+        temp_df = pandas.read_html(StringIO(r.text))[0].iloc[0:, :]
         if temp_df.empty:
             continue
-        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
+        big_df = pandas.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df["股票代码"] = big_df["股票代码"].astype(str).str.zfill(6)
     del big_df["当前价"]
     del big_df["涨跌幅"]
@@ -196,12 +196,12 @@ def stock_lhb_jgzz_sina(symbol: str = "5") -> pd.DataFrame:
         "卖出次数",
         "净额",
     ]
-    big_df["买入次数"] = pd.to_numeric(big_df["买入次数"], errors="coerce")
-    big_df["卖出次数"] = pd.to_numeric(big_df["卖出次数"], errors="coerce")
+    big_df["买入次数"] = pandas.to_numeric(big_df["买入次数"], errors="coerce")
+    big_df["卖出次数"] = pandas.to_numeric(big_df["卖出次数"], errors="coerce")
     return big_df
 
 
-def stock_lhb_jgmx_sina() -> pd.DataFrame:
+def stock_lhb_jgmx_sina() -> pandas.DataFrame:
     """
     龙虎榜-机构席位成交明细
     https://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/jgmx/index.phtml
@@ -220,16 +220,16 @@ def stock_lhb_jgmx_sina() -> pd.DataFrame:
         last_page_num = int(soup.find_all(attrs={"class": "page"})[-2].text)
     except:  # noqa: E722
         last_page_num = 1
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in tqdm(range(1, last_page_num + 1), leave=False):
         params = {
             "p": page,
         }
         r = requests.get(url, params=params)
-        temp_df = pd.read_html(StringIO(r.text))[0].iloc[0:, :]
-        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
+        temp_df = pandas.read_html(StringIO(r.text))[0].iloc[0:, :]
+        big_df = pandas.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df["股票代码"] = big_df["股票代码"].astype(str).str.zfill(6)
-    big_df["交易日期"] = pd.to_datetime(big_df["交易日期"], errors="coerce").dt.date
+    big_df["交易日期"] = pandas.to_datetime(big_df["交易日期"], errors="coerce").dt.date
     big_df.rename(
         columns={
             "机构席位买入额(万)": "机构席位买入额",
@@ -237,8 +237,8 @@ def stock_lhb_jgmx_sina() -> pd.DataFrame:
         },
         inplace=True,
     )
-    big_df["机构席位买入额"] = pd.to_numeric(big_df["机构席位买入额"], errors="coerce")
-    big_df["机构席位卖出额"] = pd.to_numeric(big_df["机构席位卖出额"], errors="coerce")
+    big_df["机构席位买入额"] = pandas.to_numeric(big_df["机构席位买入额"], errors="coerce")
+    big_df["机构席位卖出额"] = pandas.to_numeric(big_df["机构席位卖出额"], errors="coerce")
     return big_df
 
 

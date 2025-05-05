@@ -3,9 +3,9 @@
 
 import logging
 import concurrent.futures
-import instock.core.stockfetch as stf
-import instock.core.tablestructure as tbs
-import instock.lib.trade_time as trd
+import instock.core.stockfetch
+import instock.core.tablestructure
+import instock.lib.trade_time
 from instock.lib.singleton_type import singleton_type
 
 __author__ = 'myh '
@@ -16,7 +16,7 @@ __date__ = '2023/3/10 '
 class stock_data(metaclass=singleton_type):
     def __init__(self, date):
         try:
-            self.data = stf.fetch_stocks(date)
+            self.data = instock.core.stockfetch.fetch_stocks(date)
         except Exception as e:
             logging.error(f"singleton.stock_data处理异常：{e}")
 
@@ -28,17 +28,17 @@ class stock_data(metaclass=singleton_type):
 class stock_hist_data(metaclass=singleton_type):
     def __init__(self, date=None, stocks=None, workers=16):
         if stocks is None:
-            _subset = stock_data(date).get_data()[list(tbs.TABLE_CN_STOCK_FOREIGN_KEY['columns'])]
+            _subset = stock_data(date).get_data()[list(instock.core.tablestructure.TABLE_CN_STOCK_FOREIGN_KEY['columns'])]
             stocks = [tuple(x) for x in _subset.values]
         if stocks is None:
             self.data = None
             return
-        date_start, is_cache = trd.get_trade_hist_interval(stocks[0][0])  # 提高运行效率，只运行一次
+        date_start, is_cache = instock.lib.trade_time.get_trade_hist_interval(stocks[0][0])  # 提高运行效率，只运行一次
         _data = {}
         try:
             # max_workers是None还是没有给出，将默认为机器cup个数*5
             with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-                future_to_stock = {executor.submit(stf.fetch_stock_hist, stock, date_start, is_cache): stock for stock
+                future_to_stock = {executor.submit(instock.core.stockfetch.fetch_stock_hist, stock, date_start, is_cache): stock for stock
                                    in stocks}
                 for future in concurrent.futures.as_completed(future_to_stock):
                     stock = future_to_stock[future]

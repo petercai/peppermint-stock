@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import instock.core.stockfetch as stf
+import instock.core.stockfetch
 from instock.lib.singleton_type import singleton_type
 
 __author__ = 'myh '
@@ -13,7 +13,7 @@ __date__ = '2023/3/10 '
 class stock_trade_date(metaclass=singleton_type):
     def __init__(self):
         try:
-            self.data = stf.fetch_stocks_trade_date()
+            self.data = instock.core.stockfetch.fetch_stocks_trade_date()
         except Exception as e:
             logging.error(f"singleton.stock_trade_date处理异常：{e}")
 

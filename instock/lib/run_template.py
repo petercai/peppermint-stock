@@ -7,7 +7,7 @@ import datetime
 import concurrent.futures
 import sys
 import time
-import instock.lib.trade_time as trd
+import instock.lib.trade_time
 
 __author__ = 'myh '
 __date__ = '2023/3/10 '
@@ -25,7 +25,7 @@ def run_with_args(run_fun, *args):
         try:
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 while run_date <= end_date:
-                    if trd.is_trade_date(run_date):
+                    if instock.lib.trade_time.is_trade_date(run_date):
                         executor.submit(run_fun, run_date, *args)
                         time.sleep(2)
                     run_date += datetime.timedelta(days=1)
@@ -39,7 +39,7 @@ def run_with_args(run_fun, *args):
                 for date in dates:
                     tmp_year, tmp_month, tmp_day = date.split("-")
                     run_date = datetime.datetime(int(tmp_year), int(tmp_month), int(tmp_day)).date()
-                    if trd.is_trade_date(run_date):
+                    if instock.lib.trade_time.is_trade_date(run_date):
                         executor.submit(run_fun, run_date, *args)
                         time.sleep(2)
         except Exception as e:
@@ -47,7 +47,7 @@ def run_with_args(run_fun, *args):
     else:
         # 当前时间作业 python xxx.py
         try:
-            run_date, run_date_nph = trd.get_trade_date_last()
+            run_date, run_date_nph = instock.lib.trade_time.get_trade_date_last()
             if run_fun.__name__.startswith('save_nph'):
                 run_fun(run_date_nph, False)
             elif run_fun.__name__.startswith('save_after_close'):

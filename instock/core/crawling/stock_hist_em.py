@@ -5,12 +5,12 @@ Date: 2022/6/19 15:26
 Desc: 东方财富网-行情首页-沪深京 A 股
 """
 import requests
-import pandas as pd
+import pandas
 import math
 from functools import lru_cache
 
 
-def stock_zh_a_spot_em() -> pd.DataFrame:
+def stock_zh_a_spot_em() -> pandas.DataFrame:
     """
     东方财富网-沪深京 A 股-实时行情
     https://quote.eastmoney.com/center/gridlist.html#hs_a_board
@@ -37,7 +37,7 @@ def stock_zh_a_spot_em() -> pd.DataFrame:
     data_json = r.json()
     data = data_json["data"]["diff"]
     if not data:
-        return pd.DataFrame()
+        return pandas.DataFrame()
 
     data_count = data_json["data"]["total"]
     page_count = math.ceil(data_count/page_size)
@@ -50,7 +50,7 @@ def stock_zh_a_spot_em() -> pd.DataFrame:
         data.extend(_data)
         page_count =page_count - 1
 
-    temp_df = pd.DataFrame(data)
+    temp_df = pandas.DataFrame(data)
     temp_df.columns = [
         "最新价",
         "涨跌幅",
@@ -137,43 +137,43 @@ def stock_zh_a_spot_em() -> pd.DataFrame:
             "上市时间"
         ]
     ]
-    temp_df["最新价"] = pd.to_numeric(temp_df["最新价"], errors="coerce")
-    temp_df["涨跌幅"] = pd.to_numeric(temp_df["涨跌幅"], errors="coerce")
-    temp_df["涨跌额"] = pd.to_numeric(temp_df["涨跌额"], errors="coerce")
-    temp_df["成交量"] = pd.to_numeric(temp_df["成交量"], errors="coerce")
-    temp_df["成交额"] = pd.to_numeric(temp_df["成交额"], errors="coerce")
-    temp_df["振幅"] = pd.to_numeric(temp_df["振幅"], errors="coerce")
-    temp_df["量比"] = pd.to_numeric(temp_df["量比"], errors="coerce")
-    temp_df["换手率"] = pd.to_numeric(temp_df["换手率"], errors="coerce")
-    temp_df["最高"] = pd.to_numeric(temp_df["最高"], errors="coerce")
-    temp_df["最低"] = pd.to_numeric(temp_df["最低"], errors="coerce")
-    temp_df["今开"] = pd.to_numeric(temp_df["今开"], errors="coerce")
-    temp_df["昨收"] = pd.to_numeric(temp_df["昨收"], errors="coerce")
-    temp_df["涨速"] = pd.to_numeric(temp_df["涨速"], errors="coerce")
-    temp_df["5分钟涨跌"] = pd.to_numeric(temp_df["5分钟涨跌"], errors="coerce")
-    temp_df["60日涨跌幅"] = pd.to_numeric(temp_df["60日涨跌幅"], errors="coerce")
-    temp_df["年初至今涨跌幅"] = pd.to_numeric(temp_df["年初至今涨跌幅"], errors="coerce")
-    temp_df["市盈率动"] = pd.to_numeric(temp_df["市盈率动"], errors="coerce")
-    temp_df["市盈率TTM"] = pd.to_numeric(temp_df["市盈率TTM"], errors="coerce")
-    temp_df["市盈率静"] = pd.to_numeric(temp_df["市盈率静"], errors="coerce")
-    temp_df["市净率"] = pd.to_numeric(temp_df["市净率"], errors="coerce")
-    temp_df["每股收益"] = pd.to_numeric(temp_df["每股收益"], errors="coerce")
-    temp_df["每股净资产"] = pd.to_numeric(temp_df["每股净资产"], errors="coerce")
-    temp_df["每股公积金"] = pd.to_numeric(temp_df["每股公积金"], errors="coerce")
-    temp_df["每股未分配利润"] = pd.to_numeric(temp_df["每股未分配利润"], errors="coerce")
-    temp_df["加权净资产收益率"] = pd.to_numeric(temp_df["加权净资产收益率"], errors="coerce")
-    temp_df["毛利率"] = pd.to_numeric(temp_df["毛利率"], errors="coerce")
-    temp_df["资产负债率"] = pd.to_numeric(temp_df["资产负债率"], errors="coerce")
-    temp_df["营业收入"] = pd.to_numeric(temp_df["营业收入"], errors="coerce")
-    temp_df["营业收入同比增长"] = pd.to_numeric(temp_df["营业收入同比增长"], errors="coerce")
-    temp_df["归属净利润"] = pd.to_numeric(temp_df["归属净利润"], errors="coerce")
-    temp_df["归属净利润同比增长"] = pd.to_numeric(temp_df["归属净利润同比增长"], errors="coerce")
-    temp_df["报告期"] = pd.to_datetime(temp_df["报告期"], format='%Y%m%d', errors="coerce")
-    temp_df["总股本"] = pd.to_numeric(temp_df["总股本"], errors="coerce")
-    temp_df["已流通股份"] = pd.to_numeric(temp_df["已流通股份"], errors="coerce")
-    temp_df["总市值"] = pd.to_numeric(temp_df["总市值"], errors="coerce")
-    temp_df["流通市值"] = pd.to_numeric(temp_df["流通市值"], errors="coerce")
-    temp_df["上市时间"] = pd.to_datetime(temp_df["上市时间"], format='%Y%m%d', errors="coerce")
+    temp_df["最新价"] = pandas.to_numeric(temp_df["最新价"], errors="coerce")
+    temp_df["涨跌幅"] = pandas.to_numeric(temp_df["涨跌幅"], errors="coerce")
+    temp_df["涨跌额"] = pandas.to_numeric(temp_df["涨跌额"], errors="coerce")
+    temp_df["成交量"] = pandas.to_numeric(temp_df["成交量"], errors="coerce")
+    temp_df["成交额"] = pandas.to_numeric(temp_df["成交额"], errors="coerce")
+    temp_df["振幅"] = pandas.to_numeric(temp_df["振幅"], errors="coerce")
+    temp_df["量比"] = pandas.to_numeric(temp_df["量比"], errors="coerce")
+    temp_df["换手率"] = pandas.to_numeric(temp_df["换手率"], errors="coerce")
+    temp_df["最高"] = pandas.to_numeric(temp_df["最高"], errors="coerce")
+    temp_df["最低"] = pandas.to_numeric(temp_df["最低"], errors="coerce")
+    temp_df["今开"] = pandas.to_numeric(temp_df["今开"], errors="coerce")
+    temp_df["昨收"] = pandas.to_numeric(temp_df["昨收"], errors="coerce")
+    temp_df["涨速"] = pandas.to_numeric(temp_df["涨速"], errors="coerce")
+    temp_df["5分钟涨跌"] = pandas.to_numeric(temp_df["5分钟涨跌"], errors="coerce")
+    temp_df["60日涨跌幅"] = pandas.to_numeric(temp_df["60日涨跌幅"], errors="coerce")
+    temp_df["年初至今涨跌幅"] = pandas.to_numeric(temp_df["年初至今涨跌幅"], errors="coerce")
+    temp_df["市盈率动"] = pandas.to_numeric(temp_df["市盈率动"], errors="coerce")
+    temp_df["市盈率TTM"] = pandas.to_numeric(temp_df["市盈率TTM"], errors="coerce")
+    temp_df["市盈率静"] = pandas.to_numeric(temp_df["市盈率静"], errors="coerce")
+    temp_df["市净率"] = pandas.to_numeric(temp_df["市净率"], errors="coerce")
+    temp_df["每股收益"] = pandas.to_numeric(temp_df["每股收益"], errors="coerce")
+    temp_df["每股净资产"] = pandas.to_numeric(temp_df["每股净资产"], errors="coerce")
+    temp_df["每股公积金"] = pandas.to_numeric(temp_df["每股公积金"], errors="coerce")
+    temp_df["每股未分配利润"] = pandas.to_numeric(temp_df["每股未分配利润"], errors="coerce")
+    temp_df["加权净资产收益率"] = pandas.to_numeric(temp_df["加权净资产收益率"], errors="coerce")
+    temp_df["毛利率"] = pandas.to_numeric(temp_df["毛利率"], errors="coerce")
+    temp_df["资产负债率"] = pandas.to_numeric(temp_df["资产负债率"], errors="coerce")
+    temp_df["营业收入"] = pandas.to_numeric(temp_df["营业收入"], errors="coerce")
+    temp_df["营业收入同比增长"] = pandas.to_numeric(temp_df["营业收入同比增长"], errors="coerce")
+    temp_df["归属净利润"] = pandas.to_numeric(temp_df["归属净利润"], errors="coerce")
+    temp_df["归属净利润同比增长"] = pandas.to_numeric(temp_df["归属净利润同比增长"], errors="coerce")
+    temp_df["报告期"] = pandas.to_datetime(temp_df["报告期"], format='%Y%m%d', errors="coerce")
+    temp_df["总股本"] = pandas.to_numeric(temp_df["总股本"], errors="coerce")
+    temp_df["已流通股份"] = pandas.to_numeric(temp_df["已流通股份"], errors="coerce")
+    temp_df["总市值"] = pandas.to_numeric(temp_df["总市值"], errors="coerce")
+    temp_df["流通市值"] = pandas.to_numeric(temp_df["流通市值"], errors="coerce")
+    temp_df["上市时间"] = pandas.to_datetime(temp_df["上市时间"], format='%Y%m%d', errors="coerce")
 
     return temp_df
 
@@ -219,7 +219,7 @@ def code_id_map_em() -> dict:
         data.extend(_data)
         page_count =page_count - 1
 
-    temp_df = pd.DataFrame(data)
+    temp_df = pandas.DataFrame(data)
     temp_df["market_id"] = 1
     temp_df.columns = ["sh_code", "sh_id"]
     code_id_dict = dict(zip(temp_df["sh_code"], temp_df["sh_id"]))
@@ -254,7 +254,7 @@ def code_id_map_em() -> dict:
         data.extend(_data)
         page_count =page_count - 1
 
-    temp_df_sz = pd.DataFrame(data)
+    temp_df_sz = pandas.DataFrame(data)
     temp_df_sz["sz_id"] = 0
     code_id_dict.update(dict(zip(temp_df_sz["f12"], temp_df_sz["sz_id"])))
     page_current = 1
@@ -288,7 +288,7 @@ def code_id_map_em() -> dict:
         data.extend(_data)
         page_count =page_count - 1
 
-    temp_df_sz = pd.DataFrame(data)
+    temp_df_sz = pandas.DataFrame(data)
     temp_df_sz["bj_id"] = 0
     code_id_dict.update(dict(zip(temp_df_sz["f12"], temp_df_sz["bj_id"])))
     return code_id_dict
@@ -300,7 +300,7 @@ def stock_zh_a_hist(
     start_date: str = "19700101",
     end_date: str = "20500101",
     adjust: str = "",
-) -> pd.DataFrame:
+) -> pandas.DataFrame:
     """
     东方财富网-行情首页-沪深京 A 股-每日行情
     https://quote.eastmoney.com/concept/sh603777.html?from=classic
@@ -335,8 +335,8 @@ def stock_zh_a_hist(
     r = requests.get(url, params=params)
     data_json = r.json()
     if not (data_json["data"] and data_json["data"]["klines"]):
-        return pd.DataFrame()
-    temp_df = pd.DataFrame(
+        return pandas.DataFrame()
+    temp_df = pandas.DataFrame(
         [item.split(",") for item in data_json["data"]["klines"]]
     )
     temp_df.columns = [
@@ -352,19 +352,19 @@ def stock_zh_a_hist(
         "涨跌额",
         "换手率",
     ]
-    temp_df.index = pd.to_datetime(temp_df["日期"])
+    temp_df.index = pandas.to_datetime(temp_df["日期"])
     temp_df.reset_index(inplace=True, drop=True)
 
-    temp_df["开盘"] = pd.to_numeric(temp_df["开盘"])
-    temp_df["收盘"] = pd.to_numeric(temp_df["收盘"])
-    temp_df["最高"] = pd.to_numeric(temp_df["最高"])
-    temp_df["最低"] = pd.to_numeric(temp_df["最低"])
-    temp_df["成交量"] = pd.to_numeric(temp_df["成交量"])
-    temp_df["成交额"] = pd.to_numeric(temp_df["成交额"])
-    temp_df["振幅"] = pd.to_numeric(temp_df["振幅"])
-    temp_df["涨跌幅"] = pd.to_numeric(temp_df["涨跌幅"])
-    temp_df["涨跌额"] = pd.to_numeric(temp_df["涨跌额"])
-    temp_df["换手率"] = pd.to_numeric(temp_df["换手率"])
+    temp_df["开盘"] = pandas.to_numeric(temp_df["开盘"])
+    temp_df["收盘"] = pandas.to_numeric(temp_df["收盘"])
+    temp_df["最高"] = pandas.to_numeric(temp_df["最高"])
+    temp_df["最低"] = pandas.to_numeric(temp_df["最低"])
+    temp_df["成交量"] = pandas.to_numeric(temp_df["成交量"])
+    temp_df["成交额"] = pandas.to_numeric(temp_df["成交额"])
+    temp_df["振幅"] = pandas.to_numeric(temp_df["振幅"])
+    temp_df["涨跌幅"] = pandas.to_numeric(temp_df["涨跌幅"])
+    temp_df["涨跌额"] = pandas.to_numeric(temp_df["涨跌额"])
+    temp_df["换手率"] = pandas.to_numeric(temp_df["换手率"])
 
     return temp_df
 
@@ -375,7 +375,7 @@ def stock_zh_a_hist_min_em(
     end_date: str = "2222-01-01 09:32:00",
     period: str = "5",
     adjust: str = "",
-) -> pd.DataFrame:
+) -> pandas.DataFrame:
     """
     东方财富网-行情首页-沪深京 A 股-每日分时行情
     https://quote.eastmoney.com/concept/sh603777.html?from=classic
@@ -411,7 +411,7 @@ def stock_zh_a_hist_min_em(
         }
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(
+        temp_df = pandas.DataFrame(
             [item.split(",") for item in data_json["data"]["trends"]]
         )
         temp_df.columns = [
@@ -424,17 +424,17 @@ def stock_zh_a_hist_min_em(
             "成交额",
             "最新价",
         ]
-        temp_df.index = pd.to_datetime(temp_df["时间"])
+        temp_df.index = pandas.to_datetime(temp_df["时间"])
         temp_df = temp_df[start_date:end_date]
         temp_df.reset_index(drop=True, inplace=True)
-        temp_df["开盘"] = pd.to_numeric(temp_df["开盘"])
-        temp_df["收盘"] = pd.to_numeric(temp_df["收盘"])
-        temp_df["最高"] = pd.to_numeric(temp_df["最高"])
-        temp_df["最低"] = pd.to_numeric(temp_df["最低"])
-        temp_df["成交量"] = pd.to_numeric(temp_df["成交量"])
-        temp_df["成交额"] = pd.to_numeric(temp_df["成交额"])
-        temp_df["最新价"] = pd.to_numeric(temp_df["最新价"])
-        temp_df["时间"] = pd.to_datetime(temp_df["时间"]).astype(str)
+        temp_df["开盘"] = pandas.to_numeric(temp_df["开盘"])
+        temp_df["收盘"] = pandas.to_numeric(temp_df["收盘"])
+        temp_df["最高"] = pandas.to_numeric(temp_df["最高"])
+        temp_df["最低"] = pandas.to_numeric(temp_df["最低"])
+        temp_df["成交量"] = pandas.to_numeric(temp_df["成交量"])
+        temp_df["成交额"] = pandas.to_numeric(temp_df["成交额"])
+        temp_df["最新价"] = pandas.to_numeric(temp_df["最新价"])
+        temp_df["时间"] = pandas.to_datetime(temp_df["时间"]).astype(str)
         return temp_df
     else:
         url = "http://push2his.eastmoney.com/api/qt/stock/kline/get"
@@ -451,7 +451,7 @@ def stock_zh_a_hist_min_em(
         }
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(
+        temp_df = pandas.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]
         )
         temp_df.columns = [
@@ -467,20 +467,20 @@ def stock_zh_a_hist_min_em(
             "涨跌额",
             "换手率",
         ]
-        temp_df.index = pd.to_datetime(temp_df["时间"])
+        temp_df.index = pandas.to_datetime(temp_df["时间"])
         temp_df = temp_df[start_date:end_date]
         temp_df.reset_index(drop=True, inplace=True)
-        temp_df["开盘"] = pd.to_numeric(temp_df["开盘"])
-        temp_df["收盘"] = pd.to_numeric(temp_df["收盘"])
-        temp_df["最高"] = pd.to_numeric(temp_df["最高"])
-        temp_df["最低"] = pd.to_numeric(temp_df["最低"])
-        temp_df["成交量"] = pd.to_numeric(temp_df["成交量"])
-        temp_df["成交额"] = pd.to_numeric(temp_df["成交额"])
-        temp_df["振幅"] = pd.to_numeric(temp_df["振幅"])
-        temp_df["涨跌幅"] = pd.to_numeric(temp_df["涨跌幅"])
-        temp_df["涨跌额"] = pd.to_numeric(temp_df["涨跌额"])
-        temp_df["换手率"] = pd.to_numeric(temp_df["换手率"])
-        temp_df["时间"] = pd.to_datetime(temp_df["时间"]).astype(str)
+        temp_df["开盘"] = pandas.to_numeric(temp_df["开盘"])
+        temp_df["收盘"] = pandas.to_numeric(temp_df["收盘"])
+        temp_df["最高"] = pandas.to_numeric(temp_df["最高"])
+        temp_df["最低"] = pandas.to_numeric(temp_df["最低"])
+        temp_df["成交量"] = pandas.to_numeric(temp_df["成交量"])
+        temp_df["成交额"] = pandas.to_numeric(temp_df["成交额"])
+        temp_df["振幅"] = pandas.to_numeric(temp_df["振幅"])
+        temp_df["涨跌幅"] = pandas.to_numeric(temp_df["涨跌幅"])
+        temp_df["涨跌额"] = pandas.to_numeric(temp_df["涨跌额"])
+        temp_df["换手率"] = pandas.to_numeric(temp_df["换手率"])
+        temp_df["时间"] = pandas.to_datetime(temp_df["时间"]).astype(str)
         temp_df = temp_df[
             [
                 "时间",
@@ -503,7 +503,7 @@ def stock_zh_a_hist_pre_min_em(
     symbol: str = "000001",
     start_time: str = "09:00:00",
     end_time: str = "15:50:00",
-) -> pd.DataFrame:
+) -> pandas.DataFrame:
     """
     东方财富网-行情首页-沪深京 A 股-每日分时行情包含盘前数据
     http://quote.eastmoney.com/concept/sh603777.html?from=classic
@@ -530,7 +530,7 @@ def stock_zh_a_hist_pre_min_em(
     }
     r = requests.get(url, params=params)
     data_json = r.json()
-    temp_df = pd.DataFrame(
+    temp_df = pandas.DataFrame(
         [item.split(",") for item in data_json["data"]["trends"]]
     )
     temp_df.columns = [
@@ -543,20 +543,20 @@ def stock_zh_a_hist_pre_min_em(
         "成交额",
         "最新价",
     ]
-    temp_df.index = pd.to_datetime(temp_df["时间"])
+    temp_df.index = pandas.to_datetime(temp_df["时间"])
     date_format = temp_df.index[0].date().isoformat()
     temp_df = temp_df[
         date_format + " " + start_time : date_format + " " + end_time
     ]
     temp_df.reset_index(drop=True, inplace=True)
-    temp_df["开盘"] = pd.to_numeric(temp_df["开盘"])
-    temp_df["收盘"] = pd.to_numeric(temp_df["收盘"])
-    temp_df["最高"] = pd.to_numeric(temp_df["最高"])
-    temp_df["最低"] = pd.to_numeric(temp_df["最低"])
-    temp_df["成交量"] = pd.to_numeric(temp_df["成交量"])
-    temp_df["成交额"] = pd.to_numeric(temp_df["成交额"])
-    temp_df["最新价"] = pd.to_numeric(temp_df["最新价"])
-    temp_df["时间"] = pd.to_datetime(temp_df["时间"]).astype(str)
+    temp_df["开盘"] = pandas.to_numeric(temp_df["开盘"])
+    temp_df["收盘"] = pandas.to_numeric(temp_df["收盘"])
+    temp_df["最高"] = pandas.to_numeric(temp_df["最高"])
+    temp_df["最低"] = pandas.to_numeric(temp_df["最低"])
+    temp_df["成交量"] = pandas.to_numeric(temp_df["成交量"])
+    temp_df["成交额"] = pandas.to_numeric(temp_df["成交额"])
+    temp_df["最新价"] = pandas.to_numeric(temp_df["最新价"])
+    temp_df["时间"] = pandas.to_datetime(temp_df["时间"]).astype(str)
     return temp_df
 
 

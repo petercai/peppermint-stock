@@ -5,11 +5,11 @@ Date: 2022/5/16 15:31
 Desc: 东方财富网-数据中心-大宗交易-市场统计
 http://data.eastmoney.com/dzjy/dzjy_sctj.aspx
 """
-import pandas as pd
+import pandas
 import requests
 
 
-def stock_dzjy_sctj() -> pd.DataFrame:
+def stock_dzjy_sctj() -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-市场统计
     http://data.eastmoney.com/dzjy/dzjy_sctj.aspx
@@ -30,13 +30,13 @@ def stock_dzjy_sctj() -> pd.DataFrame:
     r = requests.get(url, params=params)
     data_json = r.json()
     total_page = int(data_json['result']["pages"])
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in range(1, total_page+1):
         params.update({'pageNumber': page})
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(data_json['result']["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        temp_df = pandas.DataFrame(data_json['result']["data"])
+        big_df = pandas.concat([big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True)
     big_df['index'] = big_df['index'] + 1
     big_df.columns = [
@@ -50,18 +50,18 @@ def stock_dzjy_sctj() -> pd.DataFrame:
         "折价成交总额",
         "折价成交总额占比",
     ]
-    big_df["交易日期"] = pd.to_datetime(big_df["交易日期"]).dt.date
-    big_df["上证指数"] = pd.to_numeric(big_df["上证指数"])
-    big_df["上证指数涨跌幅"] = pd.to_numeric(big_df["上证指数涨跌幅"])
-    big_df["大宗交易成交总额"] = pd.to_numeric(big_df["大宗交易成交总额"])
-    big_df["溢价成交总额"] = pd.to_numeric(big_df["溢价成交总额"])
-    big_df["溢价成交总额占比"] = pd.to_numeric(big_df["溢价成交总额占比"])
-    big_df["折价成交总额"] = pd.to_numeric(big_df["折价成交总额"])
-    big_df["折价成交总额占比"] = pd.to_numeric(big_df["折价成交总额占比"])
+    big_df["交易日期"] = pandas.to_datetime(big_df["交易日期"]).dt.date
+    big_df["上证指数"] = pandas.to_numeric(big_df["上证指数"])
+    big_df["上证指数涨跌幅"] = pandas.to_numeric(big_df["上证指数涨跌幅"])
+    big_df["大宗交易成交总额"] = pandas.to_numeric(big_df["大宗交易成交总额"])
+    big_df["溢价成交总额"] = pandas.to_numeric(big_df["溢价成交总额"])
+    big_df["溢价成交总额占比"] = pandas.to_numeric(big_df["溢价成交总额占比"])
+    big_df["折价成交总额"] = pandas.to_numeric(big_df["折价成交总额"])
+    big_df["折价成交总额占比"] = pandas.to_numeric(big_df["折价成交总额占比"])
     return big_df
 
 
-def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_date: str = '20220104') -> pd.DataFrame:
+def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_date: str = '20220104') -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-每日明细
     http://data.eastmoney.com/dzjy/dzjy_mrmxa.aspx
@@ -95,8 +95,8 @@ def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_da
     r = requests.get(url, params=params)
     data_json = r.json()
     if not data_json['result']["data"]:
-        return pd.DataFrame()
-    temp_df = pd.DataFrame(data_json['result']["data"])
+        return pandas.DataFrame()
+    temp_df = pandas.DataFrame(data_json['result']["data"])
     temp_df.reset_index(inplace=True)
     temp_df['index'] = temp_df.index + 1
     if symbol in {'A股'}:
@@ -122,7 +122,7 @@ def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_da
             "_",
             "_",
         ]
-        temp_df["交易日期"] = pd.to_datetime(temp_df["交易日期"]).dt.date
+        temp_df["交易日期"] = pandas.to_datetime(temp_df["交易日期"]).dt.date
         temp_df = temp_df[[
             "序号",
             "交易日期",
@@ -138,13 +138,13 @@ def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_da
             "买方营业部",
             "卖方营业部",
         ]]
-        temp_df['涨跌幅'] = pd.to_numeric(temp_df['涨跌幅'])
-        temp_df['收盘价'] = pd.to_numeric(temp_df['收盘价'])
-        temp_df['成交价'] = pd.to_numeric(temp_df['成交价'])
-        temp_df['折溢率'] = pd.to_numeric(temp_df['折溢率'])
-        temp_df['成交量'] = pd.to_numeric(temp_df['成交量'])
-        temp_df['成交额'] = pd.to_numeric(temp_df['成交额'])
-        temp_df['成交额/流通市值'] = pd.to_numeric(temp_df['成交额/流通市值'])
+        temp_df['涨跌幅'] = pandas.to_numeric(temp_df['涨跌幅'])
+        temp_df['收盘价'] = pandas.to_numeric(temp_df['收盘价'])
+        temp_df['成交价'] = pandas.to_numeric(temp_df['成交价'])
+        temp_df['折溢率'] = pandas.to_numeric(temp_df['折溢率'])
+        temp_df['成交量'] = pandas.to_numeric(temp_df['成交量'])
+        temp_df['成交额'] = pandas.to_numeric(temp_df['成交额'])
+        temp_df['成交额/流通市值'] = pandas.to_numeric(temp_df['成交额/流通市值'])
     if symbol in {'B股', '基金', '债券'}:
         temp_df.columns = [
             "序号",
@@ -168,7 +168,7 @@ def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_da
             "_",
             "_",
         ]
-        temp_df["交易日期"] = pd.to_datetime(temp_df["交易日期"]).dt.date
+        temp_df["交易日期"] = pandas.to_datetime(temp_df["交易日期"]).dt.date
         temp_df = temp_df[[
             "序号",
             "交易日期",
@@ -180,13 +180,13 @@ def stock_dzjy_mrmx(symbol: str = '基金', start_date: str = '20220104', end_da
             "买方营业部",
             "卖方营业部",
         ]]
-        temp_df['成交价'] = pd.to_numeric(temp_df['成交价'])
-        temp_df['成交量'] = pd.to_numeric(temp_df['成交量'])
-        temp_df['成交额'] = pd.to_numeric(temp_df['成交额'])
+        temp_df['成交价'] = pandas.to_numeric(temp_df['成交价'])
+        temp_df['成交量'] = pandas.to_numeric(temp_df['成交量'])
+        temp_df['成交额'] = pandas.to_numeric(temp_df['成交额'])
     return temp_df
 
 
-def stock_dzjy_mrtj(start_date: str = '20220105', end_date: str = '20220105') -> pd.DataFrame:
+def stock_dzjy_mrtj(start_date: str = '20220105', end_date: str = '20220105') -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-每日统计
     http://data.eastmoney.com/dzjy/dzjy_mrtj.aspx
@@ -211,7 +211,7 @@ def stock_dzjy_mrtj(start_date: str = '20220105', end_date: str = '20220105') ->
     }
     r = requests.get(url, params=params)
     data_json = r.json()
-    temp_df = pd.DataFrame(data_json['result']["data"])
+    temp_df = pandas.DataFrame(data_json['result']["data"])
     temp_df.reset_index(inplace=True)
     temp_df['index'] = temp_df.index + 1
     temp_df.columns = [
@@ -233,7 +233,7 @@ def stock_dzjy_mrtj(start_date: str = '20220105', end_date: str = '20220105') ->
         "_",
         "_",
     ]
-    temp_df["交易日期"] = pd.to_datetime(temp_df["交易日期"]).dt.date
+    temp_df["交易日期"] = pandas.to_datetime(temp_df["交易日期"]).dt.date
     temp_df = temp_df[[
         "序号",
         "交易日期",
@@ -248,18 +248,18 @@ def stock_dzjy_mrtj(start_date: str = '20220105', end_date: str = '20220105') ->
         "成交总额",
         "成交总额/流通市值",
     ]]
-    temp_df['涨跌幅'] = pd.to_numeric(temp_df['涨跌幅'])
-    temp_df['收盘价'] = pd.to_numeric(temp_df['收盘价'])
-    temp_df['成交价'] = pd.to_numeric(temp_df['成交价'])
-    temp_df['折溢率'] = pd.to_numeric(temp_df['折溢率'])
-    temp_df['成交笔数'] = pd.to_numeric(temp_df['成交笔数'])
-    temp_df['成交总量'] = pd.to_numeric(temp_df['成交总量'])
-    temp_df['成交总额'] = pd.to_numeric(temp_df['成交总额'])
-    temp_df['成交总额/流通市值'] = pd.to_numeric(temp_df['成交总额/流通市值'])
+    temp_df['涨跌幅'] = pandas.to_numeric(temp_df['涨跌幅'])
+    temp_df['收盘价'] = pandas.to_numeric(temp_df['收盘价'])
+    temp_df['成交价'] = pandas.to_numeric(temp_df['成交价'])
+    temp_df['折溢率'] = pandas.to_numeric(temp_df['折溢率'])
+    temp_df['成交笔数'] = pandas.to_numeric(temp_df['成交笔数'])
+    temp_df['成交总量'] = pandas.to_numeric(temp_df['成交总量'])
+    temp_df['成交总额'] = pandas.to_numeric(temp_df['成交总额'])
+    temp_df['成交总额/流通市值'] = pandas.to_numeric(temp_df['成交总额/流通市值'])
     return temp_df
 
 
-def stock_dzjy_hygtj(symbol: str = '近三月') -> pd.DataFrame:
+def stock_dzjy_hygtj(symbol: str = '近三月') -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-活跃 A 股统计
     http://data.eastmoney.com/dzjy/dzjy_hygtj.aspx
@@ -289,13 +289,13 @@ def stock_dzjy_hygtj(symbol: str = '近三月') -> pd.DataFrame:
     r = requests.get(url, params=params)
     data_json = r.json()
     total_page = data_json['result']["pages"]
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in range(1, int(total_page)+1):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(data_json['result']["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        temp_df = pandas.DataFrame(data_json['result']["data"])
+        big_df = pandas.concat([big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True)
     big_df['index'] = big_df.index + 1
     big_df.columns = [
@@ -336,23 +336,23 @@ def stock_dzjy_hygtj(symbol: str = '近三月') -> pd.DataFrame:
         "上榜日后平均涨跌幅-10日",
         "上榜日后平均涨跌幅-20日",
     ]]
-    big_df["最近上榜日"] = pd.to_datetime(big_df["最近上榜日"]).dt.date
-    big_df["最新价"] = pd.to_numeric(big_df["最新价"])
-    big_df["涨跌幅"] = pd.to_numeric(big_df["涨跌幅"])
-    big_df["上榜次数-总计"] = pd.to_numeric(big_df["上榜次数-总计"])
-    big_df["上榜次数-溢价"] = pd.to_numeric(big_df["上榜次数-溢价"])
-    big_df["上榜次数-折价"] = pd.to_numeric(big_df["上榜次数-折价"])
-    big_df["总成交额"] = pd.to_numeric(big_df["总成交额"])
-    big_df["折溢率"] = pd.to_numeric(big_df["折溢率"])
-    big_df["成交总额/流通市值"] = pd.to_numeric(big_df["成交总额/流通市值"])
-    big_df["上榜日后平均涨跌幅-1日"] = pd.to_numeric(big_df["上榜日后平均涨跌幅-1日"])
-    big_df["上榜日后平均涨跌幅-5日"] = pd.to_numeric(big_df["上榜日后平均涨跌幅-5日"])
-    big_df["上榜日后平均涨跌幅-10日"] = pd.to_numeric(big_df["上榜日后平均涨跌幅-10日"])
-    big_df["上榜日后平均涨跌幅-20日"] = pd.to_numeric(big_df["上榜日后平均涨跌幅-20日"])
+    big_df["最近上榜日"] = pandas.to_datetime(big_df["最近上榜日"]).dt.date
+    big_df["最新价"] = pandas.to_numeric(big_df["最新价"])
+    big_df["涨跌幅"] = pandas.to_numeric(big_df["涨跌幅"])
+    big_df["上榜次数-总计"] = pandas.to_numeric(big_df["上榜次数-总计"])
+    big_df["上榜次数-溢价"] = pandas.to_numeric(big_df["上榜次数-溢价"])
+    big_df["上榜次数-折价"] = pandas.to_numeric(big_df["上榜次数-折价"])
+    big_df["总成交额"] = pandas.to_numeric(big_df["总成交额"])
+    big_df["折溢率"] = pandas.to_numeric(big_df["折溢率"])
+    big_df["成交总额/流通市值"] = pandas.to_numeric(big_df["成交总额/流通市值"])
+    big_df["上榜日后平均涨跌幅-1日"] = pandas.to_numeric(big_df["上榜日后平均涨跌幅-1日"])
+    big_df["上榜日后平均涨跌幅-5日"] = pandas.to_numeric(big_df["上榜日后平均涨跌幅-5日"])
+    big_df["上榜日后平均涨跌幅-10日"] = pandas.to_numeric(big_df["上榜日后平均涨跌幅-10日"])
+    big_df["上榜日后平均涨跌幅-20日"] = pandas.to_numeric(big_df["上榜日后平均涨跌幅-20日"])
     return big_df
 
 
-def stock_dzjy_hyyybtj(symbol: str = '近3日') -> pd.DataFrame:
+def stock_dzjy_hyyybtj(symbol: str = '近3日') -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-活跃营业部统计
     https://data.eastmoney.com/dzjy/dzjy_hyyybtj.html
@@ -383,13 +383,13 @@ def stock_dzjy_hyyybtj(symbol: str = '近3日') -> pd.DataFrame:
     r = requests.get(url, params=params)
     data_json = r.json()
     total_page = data_json['result']["pages"]
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in range(1, int(total_page)+1):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(data_json['result']["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        temp_df = pandas.DataFrame(data_json['result']["data"])
+        big_df = pandas.concat([big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True)
     big_df['index'] = big_df.index + 1
     big_df.columns = [
@@ -416,16 +416,16 @@ def stock_dzjy_hyyybtj(symbol: str = '近3日') -> pd.DataFrame:
         "成交金额统计-净买入额",
         "买入的股票",
     ]]
-    big_df["最近上榜日"] = pd.to_datetime(big_df["最近上榜日"]).dt.date
-    big_df["次数总计-买入"] = pd.to_numeric(big_df["次数总计-买入"])
-    big_df["次数总计-卖出"] = pd.to_numeric(big_df["次数总计-卖出"])
-    big_df["成交金额统计-买入"] = pd.to_numeric(big_df["成交金额统计-买入"])
-    big_df["成交金额统计-卖出"] = pd.to_numeric(big_df["成交金额统计-卖出"])
-    big_df["成交金额统计-净买入额"] = pd.to_numeric(big_df["成交金额统计-净买入额"])
+    big_df["最近上榜日"] = pandas.to_datetime(big_df["最近上榜日"]).dt.date
+    big_df["次数总计-买入"] = pandas.to_numeric(big_df["次数总计-买入"])
+    big_df["次数总计-卖出"] = pandas.to_numeric(big_df["次数总计-卖出"])
+    big_df["成交金额统计-买入"] = pandas.to_numeric(big_df["成交金额统计-买入"])
+    big_df["成交金额统计-卖出"] = pandas.to_numeric(big_df["成交金额统计-卖出"])
+    big_df["成交金额统计-净买入额"] = pandas.to_numeric(big_df["成交金额统计-净买入额"])
     return big_df
 
 
-def stock_dzjy_yybph(symbol: str = '近三月') -> pd.DataFrame:
+def stock_dzjy_yybph(symbol: str = '近三月') -> pandas.DataFrame:
     """
     东方财富网-数据中心-大宗交易-营业部排行
     http://data.eastmoney.com/dzjy/dzjy_yybph.aspx
@@ -455,13 +455,13 @@ def stock_dzjy_yybph(symbol: str = '近三月') -> pd.DataFrame:
     r = requests.get(url, params=params)
     data_json = r.json()
     total_page = data_json['result']["pages"]
-    big_df = pd.DataFrame()
+    big_df = pandas.DataFrame()
     for page in range(1, int(total_page)+1):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
-        temp_df = pd.DataFrame(data_json['result']["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        temp_df = pandas.DataFrame(data_json['result']["data"])
+        big_df = pandas.concat([big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df['index'] = big_df.index + 1
@@ -500,18 +500,18 @@ def stock_dzjy_yybph(symbol: str = '近三月') -> pd.DataFrame:
         "上榜后20天-平均涨幅",
         "上榜后20天-上涨概率",
     ]]
-    big_df['上榜后1天-买入次数'] = pd.to_numeric(big_df['上榜后1天-买入次数'])
-    big_df['上榜后1天-平均涨幅'] = pd.to_numeric(big_df['上榜后1天-平均涨幅'])
-    big_df['上榜后1天-上涨概率'] = pd.to_numeric(big_df['上榜后1天-上涨概率'])
-    big_df['上榜后5天-买入次数'] = pd.to_numeric(big_df['上榜后5天-买入次数'])
-    big_df['上榜后5天-平均涨幅'] = pd.to_numeric(big_df['上榜后5天-平均涨幅'])
-    big_df['上榜后5天-上涨概率'] = pd.to_numeric(big_df['上榜后5天-上涨概率'])
-    big_df['上榜后10天-买入次数'] = pd.to_numeric(big_df['上榜后10天-买入次数'])
-    big_df['上榜后10天-平均涨幅'] = pd.to_numeric(big_df['上榜后10天-平均涨幅'])
-    big_df['上榜后10天-上涨概率'] = pd.to_numeric(big_df['上榜后10天-上涨概率'])
-    big_df['上榜后20天-买入次数'] = pd.to_numeric(big_df['上榜后20天-买入次数'])
-    big_df['上榜后20天-平均涨幅'] = pd.to_numeric(big_df['上榜后20天-平均涨幅'])
-    big_df['上榜后20天-上涨概率'] = pd.to_numeric(big_df['上榜后20天-上涨概率'])
+    big_df['上榜后1天-买入次数'] = pandas.to_numeric(big_df['上榜后1天-买入次数'])
+    big_df['上榜后1天-平均涨幅'] = pandas.to_numeric(big_df['上榜后1天-平均涨幅'])
+    big_df['上榜后1天-上涨概率'] = pandas.to_numeric(big_df['上榜后1天-上涨概率'])
+    big_df['上榜后5天-买入次数'] = pandas.to_numeric(big_df['上榜后5天-买入次数'])
+    big_df['上榜后5天-平均涨幅'] = pandas.to_numeric(big_df['上榜后5天-平均涨幅'])
+    big_df['上榜后5天-上涨概率'] = pandas.to_numeric(big_df['上榜后5天-上涨概率'])
+    big_df['上榜后10天-买入次数'] = pandas.to_numeric(big_df['上榜后10天-买入次数'])
+    big_df['上榜后10天-平均涨幅'] = pandas.to_numeric(big_df['上榜后10天-平均涨幅'])
+    big_df['上榜后10天-上涨概率'] = pandas.to_numeric(big_df['上榜后10天-上涨概率'])
+    big_df['上榜后20天-买入次数'] = pandas.to_numeric(big_df['上榜后20天-买入次数'])
+    big_df['上榜后20天-平均涨幅'] = pandas.to_numeric(big_df['上榜后20天-平均涨幅'])
+    big_df['上榜后20天-上涨概率'] = pandas.to_numeric(big_df['上榜后20天-上涨概率'])
     return big_df
 
 
